@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-export const connectDB = async () => {
+export const dbConnect = async () => {
     
     mongoose.connection.on('connected', () => console.log('Mongoose connection is open.'))
     mongoose.connection.on('error', err => console.error(`Mongoose connection error has occurred: ${err}`))
