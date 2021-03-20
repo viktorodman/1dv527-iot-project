@@ -5,7 +5,7 @@ import createError from 'http-errors'
 import { dirname, join } from 'path'
 import {fileURLToPath} from 'url' 
 import hbs from 'express-hbs'
-import { socketRouter } from './routes/socketRouter.js'
+import { mqttRouter, socketRouter } from './routes/socketRouter.js'
 import session from 'express-session'
 
 export default class Server {
@@ -28,13 +28,14 @@ export default class Server {
         this.listen()
     }
 
-    setUpSocket() {
+    async setUpSocket() {
         this.app = express()
         this.server = http.createServer(this.app)
 
         const io = new SocketServer(this.server)
 
         socketRouter(io)
+        await mqttRouter(io)
 
         this.app.use((req, res, next) => {
             res.io = io

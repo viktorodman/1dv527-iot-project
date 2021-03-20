@@ -1,5 +1,34 @@
-<div>
-    <h1>THIS IS HOME</h1>
+<div class="container">
+  {{!--   <h1>THIS IS HOME</h1>
 
-    <h1>HERE WE WILL SEE MOIST AND TEMP</h1>
+    <p class="device"></p>
+    <p class="humidity"></p>
+    <p class="temp"></p>
+
+    <h1>HERE WE WILL SEE MOIST AND TEMP</h1> --}}
+    <div class="row test">
+        <div class="col s12">
+            <div class="card-panel blue-grey darken-4">
+            <h3 class="white-text center-align">
+                Temperature and humidity
+            </h3>
+            <h5 class="white-text">Device: Pycom Lopy4</h5>
+            <h5 class="white-text">Sensor: dht11</h5>
+            <h5 class="white-text" id="date">Latest update: {{viewData.date}}</h5>
+        </div>
+        </div>
+        <div class="col s6">
+        <div class="card-panel blue-grey darken-4">
+            <h3 class="white-text center-align">Temperature</h3>
+            <h6 class="white-text center-align" id="temperature">{{viewData.temperature}}°C</h6>
+        </div>
+        </div>
+        <div class="col s6">
+            <div class="card-panel blue-grey darken-4">
+            <h3 class="white-text center-align">Humidity</h3>
+            <h6 class="white-text center-align" id="humidity">{{viewData.humidity}}%</h6>
+            <h6 class="white-text center-align"></h6>
+        </div>
+        </div>
+  </div>
 </div>

@@ -25,6 +25,7 @@ const main = async () => {
             helmet.contentSecurityPolicy({
                 directives: {
                     defaultSrc: ["'self'"],
+                    styleSrc: ["'self'", 'cdnjs.cloudflare.com'],
                     scriptSrc: ["'self'", 'cdn.jsdelivr.net']
                 }
             }),
