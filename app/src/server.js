@@ -3,6 +3,7 @@ import {Server as SocketServer} from 'socket.io'
 import { dirname, join } from 'path'
 import {fileURLToPath} from 'url' 
 import hbs from 'express-hbs'
+import { socketRouter } from './routes/socketRouter'
 
 export default class Server {
     constructor(appInit) {
@@ -25,6 +26,8 @@ export default class Server {
         this.server = http.createServer(this.app)
 
         const io = new SocketServer(this.server)
+
+        socketRouter(io)
 
         this.app.use((req, res, next) => {
             res.io = io
