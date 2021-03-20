@@ -89,6 +89,8 @@ export default class Server {
     }
 
     listen() {
-
+        this.server.listen(process.env.PORT, () => {
+            console.log(`Server runnig at http://locahost:${process.env.PORT}`)
+        })
     }
 }

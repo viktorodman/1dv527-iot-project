@@ -25,6 +25,10 @@ const main = async () => {
             express.urlencoded({ extended: true })
         ]
     })
+
+    server.run()
     
 }
+
+main().catch(console.error)
 

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <base href="{{baseURL}}" />
+  <title>1DV026 - Just Task It!</title>
+  <!-- Socket.io: Load a simple client side script -->
+  <script type="module" src="./js/index.js"></script>
+</head>
+
+<body>
+    {{>header}}
+    <main role="main" class="container">
+      {{{body}}}
+    </main>
+    {{>footer}}
+
+  <!-- Bootstrap: jQuery and JS bundle w/ Popper.js -->
+  <!-- Socket.io: Using Handlebars as the template engine on the client.  -->
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+</body>
+</html>
