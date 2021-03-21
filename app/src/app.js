@@ -10,6 +10,7 @@ import { dbConnect } from './config/mongoose.js'
 import IndexRouter from './routes/indexRouter.js'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
+import ThingsRouter from './routes/thingsRouter.js'
 
 dotenv.config()
 
@@ -18,15 +19,17 @@ const main = async () => {
 
     const server = new Server({
         routers: [
-            new IndexRouter('/')
+            new IndexRouter('/'),
+            new ThingsRouter('/things')
         ],
         middleWares: [
             helmet(),
             helmet.contentSecurityPolicy({
                 directives: {
-                    defaultSrc: ["'self'"],
-                    styleSrc: ["'self'", 'cdnjs.cloudflare.com'],
-                    scriptSrc: ["'self'", 'cdn.jsdelivr.net']
+                    defaultSrc: ["'self'", 'fonts.gstatic.com'],
+                    styleSrc: ["'self'", 'cdnjs.cloudflare.com', 'https://fonts.googleapis.com'],
+                    scriptSrc: ["'self'", 'cdn.jsdelivr.net'],
+                    fontSrc: ["'self'", "https://fonts.gstatic.com"]
                 }
             }),
             morgan('dev'),

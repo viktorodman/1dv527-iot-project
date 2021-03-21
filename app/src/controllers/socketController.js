@@ -1,38 +1,44 @@
 import moment from "moment"
-import SensorData from "../models/sensorData.js"
+import ThingData from "../models/sensorData.js"
+
 
 export default class SocketController {
 
     async publishData(io, data) {
         try {
             console.log(data)
-            const sensorData = await SensorData.findOne({device: data.device.name})
+            const thingData = await ThingData.findOne({device: data.device.name})
 
             let viewData = {}
 
-            if(sensorData) {
-                sensorData.measurements.push({
-                    temperature: data.device.sensors[0].values.temperature,
-                    humidity: data.device.sensors[0].values.humidity
+            if(thingData) {
+                thingData.sensor.measurements.push({
+                    temperature: data.device.sensor.values.temperature,
+                    humidity: data.device.sensor.values.humidity
                 })
 
-                await sensorData.save()
+                await thingData.save()
 
             } else {
-                SensorData.create({
-                    device: data.device.name,
-                    sensor: data.device.sensors[0].name,
-                    measurements: [{
-                        temperature: data.device.sensors[0].values.temperature,
-                        humidity: data.device.sensors[0].values.humidity
-                    }]
+                ThingData.create({
+                    id: data.device.id,
+                    name: data.device.name,
+                    sensor: {
+                        id: data.device.sensor.id,
+                        name: data.device.sensor.name,
+                        description: data.device.sensor.description,
+                        measurements: [{
+                            temperature: data.device.sensor.values.temperature,
+                            humidity: data.device.sensor.values.humidity
+                        }]
+                    }
                 })
             }
             
 
             io.emit('sensor-data', {
-                temperature: data.device.sensors[0].values.temperature, 
-                humidity: data.device.sensors[0].values.humidity,
+                temperature: data.device.sensor.values.temperature, 
+                humidity: data.device.sensor.values.humidity,
                 date: 'Just Now'
             })
         } catch (error) {

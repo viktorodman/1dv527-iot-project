@@ -12,6 +12,8 @@ export default class ThingsRouter {
     }
 
     initializeRoutes() {
-        this.expressRouter.get('/', (req, res, next) => this.controller.index(req, res, next))
+        this.expressRouter.get('/', (req, res, next) => this.controller.index(req, res, next)),
+        this.expressRouter.get('/:id', (req, res, next) => this.controller.getOne(req, res, next))
+        this.expressRouter.get('/:id/properties', (req, res, next) => this.controller.getProperties(req, res, next))
     }
 }

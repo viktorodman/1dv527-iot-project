@@ -5,17 +5,17 @@ export default class IndexController {
 
     async index(req, res, next) {
         try {
-            const latestSensorData = await SensorData.findOne({device: "pycom lopy4"})
+            const thingData = await SensorData.findOne({id: "pycom-lopy4"})
 
             let viewData = {}
-            if (latestSensorData) {
-                console.log(latestSensorData)
+            if (thingData) {
+                console.log(thingData)
                 
-                const indexof = latestSensorData.measurements.length -1
+                const indexof = thingData.sensor.measurements.length -1
                 viewData = {
-                    temperature: latestSensorData.measurements[indexof].temperature,
-                    humidity: latestSensorData.measurements[indexof].humidity,
-                    date: moment(latestSensorData.measurements[indexof].createdAt).fromNow()
+                    temperature: thingData.sensor.measurements[indexof].temperature,
+                    humidity: thingData.sensor.measurements[indexof].humidity,
+                    date: moment(thingData.sensor.measurements[indexof].createdAt).fromNow()
                 }
 
                 console.log(viewData)
