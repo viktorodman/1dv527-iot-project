@@ -1,3 +1,4 @@
+import createHttpError from "http-errors"
 import moment from "moment"
 import ThingData from "../models/sensorData.js"
 
@@ -21,28 +22,32 @@ export default class ThingsController {
 
     async getOne(req, res, next) {
         try {
-            const thing = await ThingData.findOne({id:"pycom-lopy4" })
-            
-            const data = {
-                id: thing.id,
-                name: thing.name,
-                description: thing.description,
-                createdAt: thing.createdAt,
-                tags: ["Pycom Lopy4"],
-                links: {
-                    product: {
-                        link: "https://pycom.io/product/lopy4/",
-                        title: "Product this web thing is based on"
-                    },
-                    properties: {
-                        link: `${req.protocol}://${req.get('host')}${req.originalUrl}/properties`,
-                        title: 'List of properties'
-                    },
-                    ui: {
-                        link: `${req.protocol}://${req.get('host')}/`,
-                        title: "User Interface"
+            const thing = await ThingData.findOne({id:req.params.name })
+            let data = {}
+            if (thing) {
+                data = {
+                    id: thing.id,
+                    name: thing.name,
+                    description: thing.description,
+                    createdAt: thing.createdAt,
+                    tags: ["Pycom Lopy4"],
+                    links: {
+                        product: {
+                            link: "https://pycom.io/product/lopy4/",
+                            title: "Product this web thing is based on"
+                        },
+                        properties: {
+                            link: `${req.protocol}://${req.get('host')}${req.originalUrl}/properties`,
+                            title: 'List of properties'
+                        },
+                        ui: {
+                            link: `${req.protocol}://${req.get('host')}/`,
+                            title: "User Interface"
+                        }
                     }
                 }
+            } else {
+                throw createHttpError(404)
             }
 
             res.status(200).json(data)
@@ -53,13 +58,15 @@ export default class ThingsController {
     }
     async getProperties(req, res, next) {
         try {
-            const thing = await ThingData.findOne({id:"pycom-lopy4" })
+            const thing = await ThingData.findOne({id:req.params.name })
 
-            const indexOfLatestMeasurement = thing.sensor.measurements.length -1
+            let data = []
 
-            const latestMeasurement = thing.sensor.measurements[indexOfLatestMeasurement]
+            if (thing) {
+                const indexOfLatestMeasurement = thing.sensor.measurements.length -1
+                const latestMeasurement = thing.sensor.measurements[indexOfLatestMeasurement]
             
-            const data = [
+                data = [
                 { 
                     id: "temperature", 
                     name: "Home temperature", 
@@ -67,7 +74,8 @@ export default class ThingsController {
                     values: { 
                         temperature: latestMeasurement.temperature, 
                         description: "Temperature in celsius",
-                        unit: "celsius" 
+                        unit: "celsius",
+                        timestamp: latestMeasurement.createdAt
                     },
                     tags: ["sensor", "home"] ,
                     links: {
@@ -84,7 +92,8 @@ export default class ThingsController {
                     values: { 
                         humidity: latestMeasurement.humidity, 
                         description: "Humidity in percentage",
-                        unit: "percentage" 
+                        unit: "percentage",
+                        timestamp: latestMeasurement.createdAt 
                     },
                     tags: ["sensor", "home"],
                     links: {
@@ -95,6 +104,12 @@ export default class ThingsController {
                     } 
                 }
             ]
+
+            } else {
+                throw createHttpError(404)
+            }
+
+            
             
 
             res.status(200).json(data)
@@ -103,4 +118,32 @@ export default class ThingsController {
             next(error)
         }
     }
+    async getProperty(req, res, next) {
+        try {
+            const thing = await ThingData.findOne({id: req.params.name })
+            let data = {}
+            if (thing && (req.params.property === 'temperature' || req.params.property === 'humidity') ) {
+                const indexOfLatestMeasurement = thing.sensor.measurements.length -1
+
+                const latestMeasurement = thing.sensor.measurements[indexOfLatestMeasurement]
+
+                data = {
+                    value: latestMeasurement[req.params.property],
+                    timestamp: latestMeasurement.createdAt
+                }
+            } else {
+                throw createHttpError(404)
+            }
+           
+            
+           
+
+            res.status(200).json(data)
+
+        } catch (error) {
+            next(error)
+        }
+    }
+
+
 }
