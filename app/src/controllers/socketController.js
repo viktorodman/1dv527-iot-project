@@ -6,8 +6,7 @@ export default class SocketController {
 
     async publishData(io, data) {
         try {
-            console.log(data)
-            const thingData = await ThingData.findOne({device: data.device.name})
+            const thingData = await ThingData.findOne({id: data.device.id})
 
             let viewData = {}
 

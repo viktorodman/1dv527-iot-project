@@ -18,7 +18,6 @@ export const socketRouter = async (io) => {
         socket.on('disconnect', () => {
             console.log('user disconnected')
         })
-        socket.emit('test', {hej: 'test'})
     })
 }
 

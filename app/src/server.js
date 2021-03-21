@@ -94,7 +94,6 @@ export default class Server {
             if(err.status === 404) {
                 return res.status(404).sendFile(join(this.directoryFullName, 'views', 'errors', '404.html'))
             }
-            console.log('here')
             res.status(err.status || 500).render('errors/error.hbs', {error: err})
         })
        

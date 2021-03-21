@@ -9,16 +9,12 @@ export default class IndexController {
 
             let viewData = {}
             if (thingData) {
-                console.log(thingData)
-                
                 const indexof = thingData.sensor.measurements.length -1
                 viewData = {
                     temperature: thingData.sensor.measurements[indexof].temperature,
                     humidity: thingData.sensor.measurements[indexof].humidity,
                     date: moment(thingData.sensor.measurements[indexof].createdAt).fromNow()
                 }
-
-                console.log(viewData)
             }
             
 
